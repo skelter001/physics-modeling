@@ -1,0 +1,82 @@
+.customButton { /* this class turns an ordinary link into a nice attractive push-button */
+    display: inline-block;
+    width: 92px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: black;
+    background: -webkit-linear-gradient(white, #eeeeee, #eeeeee, #e0e0e0);
+    background: linear-gradient(white, #eeeeee, #eeeeee, #e0e0e0);
+    text-decoration: none;
+    border: 1px solid gray;
+    border-radius: 5px;
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.customButton:active {
+    background: -webkit-linear-gradient(#909090, #808080, #808080, #707070);
+    background: linear-gradient(#909090, #808080, #808080, #707070);
+}
+
+input[type=range] {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+sup {
+    position: relative;
+    vertical-align: bottom;
+    bottom: 0.4em;
+    font-size: 0.75em;
+}
+
+body {
+    background-color: #d0d0d0;
+    font-family: sans-serif;
+    font-size: 15px;
+    line-height: 18px;
+}
+
+h1 {
+    font-size: 18pt;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.centeringContainer {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mainContainer {
+    width: 1300px;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.textContainer {
+    text-align: center;
+    -webkit-text-size-adjust: 100%;
+    margin-top: 4px;
+}
+
+title {
+    font-size: 18pt;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#theCanvas {
+    /*width: 600px;
+    height: 300px;*/
+    border-radius: 15px;
+    display: inline;
+}
