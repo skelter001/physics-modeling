@@ -21,24 +21,11 @@
         &nbsp;Speed:
         <input type="range" id="speedSlider" min="0" max="0.2" step="0.001" value="0.05">
         &nbsp
-        <input type="radio" name="plotType" id="realImag" onclick="paintCanvas();">Real/imag &nbsp;
-        <input type="radio" name="plotType" checked onclick="paintCanvas();">Density/phase
     </div>
     <div class="textContainer">
         <a href="javascript:void(0)" class="customButton"
            onclick="zero();" ontouchstart="">Zero</a>
-        <a href="javascript:void(0)" class="customButton"
-           onclick="normalizePsi();" ontouchstart="">Normalize</a>
-        &nbsp;&nbsp;
-        <a href="javascript:void(0)" class="customButton"
-           onclick="coherent();" ontouchstart="">Coherent(&alpha;)</a>
-        &alpha; = <span id="alphaReadout">1.0</span>
-        <input type="range" id="alphaSlider" min="0" max="4" step="0.1" value="1"
-               onchange="adjustAlpha();" oninput="adjustAlpha();">
     </div>
-
-
-    <p>By <a href="http://physics.weber.edu/schroeder/">Daniel V. Schroeder</a>
 </div>
 
 <script src="app.js"></script>

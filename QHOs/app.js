@@ -2,9 +2,6 @@ const theCanvas = document.getElementById("theCanvas");
 const theContext = theCanvas.getContext("2d");
 const pauseButton = document.getElementById("pauseButton");
 const speedSlider = document.getElementById("speedSlider");
-const realImag = document.getElementById("realImag");
-const alphaSlider = document.getElementById("alphaSlider");
-const alphaReadout = document.getElementById("alphaReadout");
 
 const iMax = Number(theCanvas.width);	// max index in function arrays (so array size is iMax+1)
 const pxPerX = 60;			// number of pixels per conventional x unit
@@ -56,8 +53,8 @@ function init() {
         phase[n] = 0;
     }
 
-    amplitude[0] = 1 / Math.sqrt(2);
-    amplitude[1] = 1 / Math.sqrt(2);
+    //amplitude[0] = 1 / Math.sqrt(2);
+    //amplitude[1] = 1 / Math.sqrt(2);
     // Initialize array of colors to represent phases:
 
     for (let c = 0; c <= nColors; c++) {
@@ -152,56 +149,36 @@ function paintCanvas() {
     theContext.fillRect(0, 0, theCanvas.width, theCanvas.height);
 
     let baselineY, pxPerY;
+    baselineY = theCanvas.height * (1 - clockSpaceFraction) / 2;
+    pxPerY = baselineY * 0.9;
 
-    if (realImag.checked) {
-        baselineY = theCanvas.height * (1 - clockSpaceFraction) / 2;
-        pxPerY = baselineY * 0.9;
+    // Draw the horizontal axis:
+    theContext.strokeStyle = "gray";
+    theContext.lineWidth = 1;
+    theContext.beginPath();
+    theContext.moveTo(0, baselineY);
+    theContext.lineTo(theCanvas.width, baselineY);
+    theContext.stroke();
 
-        // Draw the horizontal axis:
-        theContext.strokeStyle = "gray";
-        theContext.lineWidth = 1;
-        theContext.beginPath();
-        theContext.moveTo(0, baselineY);
-        theContext.lineTo(theCanvas.width, baselineY);
-        theContext.stroke();
+    theContext.lineWidth = 2;
 
-        theContext.lineWidth = 2;
-
-        // Plot the real part of psi:
-        theContext.beginPath();
-        theContext.moveTo(0, baselineY - psi.re[0] * pxPerY);
-        for (let i = 1; i <= iMax; i++) {
-            theContext.lineTo(i, baselineY - psi.re[i] * pxPerY);
-        }
-        theContext.strokeStyle = "#ffc000";
-        theContext.stroke();
-
-        // Plot the imaginary part of psi:
-        theContext.beginPath();
-        theContext.moveTo(0, baselineY - psi.im[0] * pxPerY);
-        for (let i = 1; i <= iMax; i++) {
-            theContext.lineTo(i, baselineY - psi.im[i] * pxPerY);
-        }
-        theContext.strokeStyle = "#00d0ff";
-        theContext.stroke();
-
-    } else {	// "Density/phase" is checked
-
-        // Plot the probability distribution with phase as color:
-        baselineY = theCanvas.height * (1 - clockSpaceFraction);
-        pxPerY = baselineY * 0.55;
-        theContext.lineWidth = 2;
-        for (let i = 0; i <= iMax; i++) {
-            theContext.beginPath();
-            theContext.moveTo(i, baselineY);
-            theContext.lineTo(i, baselineY - pxPerY * (psi.re[i] * psi.re[i] + psi.im[i] * psi.im[i]));
-            let localPhase = Math.atan2(psi.im[i], psi.re[i]);
-            if (localPhase < 0)
-                localPhase += 2 * Math.PI;
-            theContext.strokeStyle = phaseColor[Math.round(localPhase * nColors / (2 * Math.PI))];
-            theContext.stroke();
-        }
+    // Plot the real part of psi:
+    theContext.beginPath();
+    theContext.moveTo(0, baselineY - psi.re[0] * pxPerY);
+    for (let i = 1; i <= iMax; i++) {
+        theContext.lineTo(i, baselineY - psi.re[i] * pxPerY);
     }
+    theContext.strokeStyle = "#ffc000";
+    theContext.stroke();
+
+    // Plot the imaginary part of psi:
+    theContext.beginPath();
+    theContext.moveTo(0, baselineY - psi.im[0] * pxPerY);
+    for (let i = 1; i <= iMax; i++) {
+        theContext.lineTo(i, baselineY - psi.im[i] * pxPerY);
+    }
+    theContext.strokeStyle = "#00d0ff";
+    theContext.stroke();
 
     // Draw the eigen-phasor diagrams:
     const phasorSpace = theCanvas.height * clockSpaceFraction;
@@ -249,40 +226,11 @@ function startStop() {
 }
 
 function zero() {
-    for (var n = 0; n <= nMax; n++) {
+    for (let n = 0; n <= nMax; n++) {
         amplitude[n] = 0;
     }
     buildPsi();
     paintCanvas();
-}
-
-function normalizePsi() {
-    let norm2 = 0;
-    for (let n = 0; n <= nMax; n++) {
-        norm2 += amplitude[n] * amplitude[n];
-    }
-    if (norm2 > 0) {
-        for (let n = 0; n <= nMax; n++) {
-            amplitude[n] /= Math.sqrt(norm2);
-        }
-        buildPsi();
-        paintCanvas();
-    }
-}
-
-function coherent() {
-    const alphaMag = Number(alphaSlider.value);
-    let nFact = 1;
-    for (let n = 0; n <= nMax; n++) {
-        if (n > 0) nFact *= n;
-        amplitude[n] = Math.pow(alphaMag, n) / Math.sqrt(nFact);
-        phase[n] = 0;
-    }
-    normalizePsi();
-}
-
-function adjustAlpha() {
-    alphaReadout.innerHTML = Number(alphaSlider.value).toFixed(1);
 }
 
 // Function to convert a number to a two-digit hex string (from stackoverflow):
@@ -293,7 +241,7 @@ function twoDigitHex(c) {
 
 // Function to create a hex color string for a given hue (between 0 and 1):
 function colorString(hue) {
-    var r, g, b;
+    let r, g, b;
     if (hue < 1 / 6) {
         r = 255;
         g = Math.round(hue * 6 * 255);
